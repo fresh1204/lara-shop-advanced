@@ -16,7 +16,7 @@ class CategoryService
 			// 从所有类目中挑选出父类目 ID 为 $parentId 的类目
 			->where('parent_id',$parentId)
 			// 遍历这些类目，并用返回值构建一个新的集合
-			->map(function(Category $category) use($allCategories){
+			->map(function(Category $category) use ($allCategories){
 				$data = ['id' => $category->id,'name' => $category->name];
 				// 如果当前类目不是父类目，则直接返回
 				if(!$category->is_directory){
@@ -28,4 +28,24 @@ class CategoryService
 				return $data;
 			});
 	}
+
+	/*
+	public function getCategoryTree2($parentId = null,$allCategories = null)
+	{
+		if(is_null($allCategories)){
+			 // 从数据库中一次性取出所有类目
+			$allCategories = Category::all();
+		}
+		return $allCategories->where('parent_id',$parentId)
+		->map(function(Category $category) {
+			$data = ['id'=>$category->id,'name'=>$category->name];
+			// 如果当前类目不是父类目，则直接返回
+			if(!$category->is_directory){
+				return $data;
+			}else{
+				return $category->id.'||'.$category->name;
+			}
+		});
+	}
+	*/
 }
