@@ -8,11 +8,12 @@ use App\Exceptions\InvalidRequestException;
 use App\Exceptions\InternalException;
 use App\Models\OrderItem;
 use App\Models\Category;
+use App\Services\CategoryService;
 
 class ProductsController extends Controller
 {
     //商品首页
-    public function index(Request $request)
+    public function index(Request $request,CategoryService $categoryService)
     {
     	
     	//$products = Product::query()->where('on_sale',true)->paginate(16);
@@ -71,6 +72,8 @@ class ProductsController extends Controller
     		],
             // 等价于 isset($category) ? $category : null
             'category' => $category ?? null,
+            // 将类目树传递给模板文件
+            //'categoryTree' => $categoryService->getCategoryTree(),
     	]);
     }
 
