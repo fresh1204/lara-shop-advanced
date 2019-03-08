@@ -6,8 +6,8 @@ use Illuminate\Http\Request;
 use App\Http\Requests\OrderRequest;
 use App\Models\Order;
 use App\Models\UserAddress;
-/*
 use App\Models\ProductSku;
+/*
 use Carbon\Carbon;
 use App\Exceptions\InvalidRequestException;
 use App\Jobs\CloseOrder;
@@ -15,6 +15,7 @@ use App\Services\CartService;
 */
 use App\Services\OrderService;
 use App\Http\Requests\SendReviewRequest;
+use App\Http\Requests\CrowdFundingOrderRequest;
 use Carbon\Carbon;
 use App\Events\OrderReviewed;
 use App\Http\Requests\ApplyRefundRequest;
@@ -107,6 +108,17 @@ class OrdersController extends Controller
 
     	return $order;
     */
+    }
+
+    // 创建一个用于接受众筹商品下单请求
+    public function crowdfunding(CrowdFundingOrderRequest $request,OrderService $orderService)
+    {
+        $user = $request->user();
+        $address = UserAddress::find($request->input('address_id'));
+        $sku = ProductSku::find($request->input('sku_id'));
+        $amount = $request->input('amount');
+
+        return $orderService->crowdfunding($user,$address,$sku,$amount);
     }
 
     //订单列表
