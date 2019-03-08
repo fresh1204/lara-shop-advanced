@@ -140,4 +140,7 @@ class OrderService
 
 		// 剩余秒数与默认订单关闭时间取较小值作为订单关闭时间
 		dispatch(new CloseOrder($order,min(config('app.order_ttl'),$crowdfundingTtl)));
+
+		return $order;
 	}
+}

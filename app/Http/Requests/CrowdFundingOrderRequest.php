@@ -28,7 +28,7 @@ class CrowdFundingOrderRequest extends Request
                     if($sku->product->type !== Product::TYPE_CROWDFUNDING){
                         return $fail('该商品不支持众筹');
                     }
-                    if(!$sku->product->is_on){
+                    if(!$sku->product->on_sale){
                         return $fail('该商品未上架');
                     }
                     // 还需要判断众筹本身的状态，如果不是众筹中则无法下单
