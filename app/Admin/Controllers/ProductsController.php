@@ -11,16 +11,42 @@ use Encore\Admin\Grid;
 use Encore\Admin\Layout\Content;
 use Encore\Admin\Show;
 
-class ProductsController extends Controller
+class ProductsController extends CommonProductsController
 {
-    use HasResourceActions;
+    //use HasResourceActions;
 
-    /**
-     * Index interface.
-     *
-     * @param Content $content
-     * @return Content
-     */
+    // 定义商品类型
+    public function getProductType()
+    {
+        return Product::TYPE_NORMAL;
+    }
+
+    // 定义列表应该展示哪些字段
+    public function customGrid(Grid $grid)
+    {
+        // 使用 with 来预加载商品类目数据，减少 SQL 查询
+        $grid->model()->with(['category']);
+        
+        $grid->id('ID')->sortable();
+        $grid->title('商品名称');
+        // Laravel-Admin 支持用符号 . 来展示关联关系的字段
+        $grid->column('category.name','类目');
+        $grid->on_sale('已上架')->display(function($value){
+            return $value ? '是' : '否';
+        });
+        $grid->price('价格');
+        $grid->rating('评分');
+        $grid->sold_count('销量');
+        $grid->review_count('评论数');
+    }
+
+    // 定义表单应该有哪些额外的字段
+    public function customForm(Form $form)
+    {
+        // 普通商品没有额外的字段
+    }
+
+    /*
     public function index(Content $content)
     {
         return $content
@@ -29,13 +55,6 @@ class ProductsController extends Controller
     }
 
 
-    /**
-     * Edit interface.
-     *
-     * @param mixed $id
-     * @param Content $content
-     * @return Content
-     */
     public function edit($id, Content $content)
     {
         return $content
@@ -43,12 +62,7 @@ class ProductsController extends Controller
             ->body($this->form()->edit($id));
     }
 
-    /**
-     * Create interface.
-     *
-     * @param Content $content
-     * @return Content
-     */
+    
     public function create(Content $content)
     {
         return $content
@@ -56,11 +70,7 @@ class ProductsController extends Controller
             ->body($this->form());
     }
 
-    /**
-     * Make a grid builder.
-     *
-     * @return Grid
-     */
+    //列表展示内容
     protected function grid()
     {
         $grid = new Grid(new Product);
@@ -98,12 +108,7 @@ class ProductsController extends Controller
         return $grid;
     }
 
-    
-    /**
-     * Make a form builder.
-     *
-     * @return Form
-     */
+    //表单内容
     protected function form()
     {
         $form = new Form(new Product);
@@ -147,4 +152,5 @@ class ProductsController extends Controller
 
         return $form;
     }
+    */
 }

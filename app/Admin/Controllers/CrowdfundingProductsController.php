@@ -12,16 +12,44 @@ use Encore\Admin\Grid;
 use Encore\Admin\Layout\Content;
 use Encore\Admin\Show;
 
-class CrowdfundingProductsController extends Controller
+class CrowdfundingProductsController extends CommonProductsController
 {
-    use HasResourceActions;
+    //use HasResourceActions;
 
-    /**
-     * Index interface.
-     *
-     * @param Content $content
-     * @return Content
-     */
+    // 定义商品类型
+    public function getProductType()
+    {
+        return Product::TYPE_CROWDFUNDING;
+    }
+
+    // 定义列表应该展示哪些字段
+    public function customGrid(Grid $grid)
+    {
+        $grid->id('ID')->sortable();
+        $grid->title('商品名称');
+        $grid->on_sale('已上架')->display(function($value){
+            return $value ? '是' : '否';
+        });
+        $grid->price('价格');
+
+        // 展示众筹相关字段
+        $grid->column('crowdfunding.target_amount','目标金额');
+        $grid->column('crowdfunding.end_at','结束时间');
+        $grid->column('crowdfunding.total_amount','目前金额');
+        $grid->column('crowdfunding.status','状态')->display(function($value){
+            return CrowdfundingProduct::$statusMap[$value];
+        });
+    }
+
+    // 定义表单应该有哪些额外的字段
+    public function customForm(Form $form)
+    {
+        // 添加众筹相关字段
+        $form->text('crowdfunding.target_amount', '众筹目标金额')->rules('required|numeric|min:0.01');
+        $form->datetime('crowdfunding.end_at', '众筹结束时间')->rules('required|date');
+    }
+
+    /*
     public function index(Content $content)
     {
         return $content
@@ -29,14 +57,6 @@ class CrowdfundingProductsController extends Controller
             ->body($this->grid());
     }
 
-
-    /**
-     * Edit interface.
-     *
-     * @param mixed $id
-     * @param Content $content
-     * @return Content
-     */
     public function edit($id, Content $content)
     {
         return $content
@@ -44,12 +64,6 @@ class CrowdfundingProductsController extends Controller
             ->body($this->form()->edit($id));
     }
 
-    /**
-     * Create interface.
-     *
-     * @param Content $content
-     * @return Content
-     */
     public function create(Content $content)
     {
         return $content
@@ -57,11 +71,6 @@ class CrowdfundingProductsController extends Controller
             ->body($this->form());
     }
 
-    /**
-     * Make a grid builder.
-     *
-     * @return Grid
-     */
     protected function grid()
     {
         $grid = new Grid(new Product);
@@ -98,12 +107,6 @@ class CrowdfundingProductsController extends Controller
         return $grid;
     }
 
-
-    /**
-     * Make a form builder.
-     *
-     * @return Form
-     */
     protected function form()
     {
         $form = new Form(new Product);
@@ -142,4 +145,5 @@ class CrowdfundingProductsController extends Controller
 
         return $form;
     }
+    */
 }
