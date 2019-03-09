@@ -12,6 +12,7 @@ use Encore\Admin\Show;
 use Illuminate\Http\Request;
 use App\Exceptions\InvalidRequestException;
 use App\Http\Requests\Admin\HandleRefundRequest;
+use App\Services\OrderService;
 
 class OrdersController extends Controller
 {
@@ -219,7 +220,7 @@ class OrdersController extends Controller
     }
 
     //处理退款
-    public function handleRefund(Order $order,HandleRefundRequest $request)
+    public function handleRefund(Order $order,HandleRefundRequest $request,OrderService $orderService)
     {
         // 判断订单状态是否正确
         if($order->refund_status !== Order::REFUND_STATUS_APPLIED){
@@ -236,7 +237,7 @@ class OrdersController extends Controller
             ]);
 
             // 调用同意退款逻辑
-            $this->_refundOrder($order);
+            $orderService->refundOrder($order);
 
         }else{
             // 将拒绝退款理由放到订单的 extra 字段中
@@ -252,7 +253,8 @@ class OrdersController extends Controller
         return $order;
     }   
 
-    // 同意退款处理逻辑
+    // 同意退款处理逻辑(该封装方法已移动到Services处理类里)
+    /*
     protected function _refundOrder(Order $order)
     {
         // 判断该订单的支付方式
@@ -296,4 +298,5 @@ class OrdersController extends Controller
                    break;
            }   
     }
+    */
 }

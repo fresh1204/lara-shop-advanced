@@ -14,6 +14,7 @@ use App\Exceptions\CouponCodeUnavailableException;
 
 class OrderService
 {
+	//普通商品下订单
 	public function store(User $user,UserAddress $address,$remark,$items,CouponCode $coupon = null)
 	{
 		// 如果传入了优惠券，则先检查是否可用
@@ -144,5 +145,50 @@ class OrderService
 		dispatch(new CloseOrder($order,min(config('app.order_ttl'),$crowdfundingTtl)));
 
 		return $order;
+	}
+
+	//退款处理逻辑
+	public function refundOrder(Order $order)
+	{
+		// 判断该订单的支付方式
+		switch ($order->payment_method) {
+			case 'wechat':
+				# code...
+				break;
+			case 'alipay':
+                   // 生成一个退款订单号
+                   $refundNo = Order::getAvailableRefundNo();
+                    
+                   // 调用支付宝支付实例的 refund 方法
+                   $ret = app('alipay')->refund([
+                    'out_trade_no' => $order->no,  // 订单流水号
+                    'refund_amount' => $order->total_amount,  // 退款金额，单位元
+                    'out_request_no' => $refundNo,   // 退款订单号
+                   ]);
+                   //\Log::info($ret);
+                   
+                   // 根据支付宝的文档，如果返回值里有 sub_code 字段说明退款失败
+                   if($ret->sub_code){
+                    // 将退款失败的保存存入 extra 字段
+                    $extra = $order->extra;
+                    $extra['refund_failed_code'] = $ret->sub_code;
+                    // 将订单的退款状态标记为退款失败
+                    $order->update([
+                        'refund_no' => $refundNo,
+                        'refund_status' => Order::REFUND_STATUS_FAILED,
+                        'extra' => $extra,
+                    ]);
+                   }else{
+                    // 将订单的退款状态标记为退款成功并保存退款订单号
+                    $order->update([
+                        'refund_no' => $refundNo,
+                        'refund_status' => Order::REFUND_STATUS_SUCCESS,
+                    ]);
+                   }
+                   break;
+			default:
+                throw new InternalException('未知订单支付方式：'.$order->payment_method);
+				break;
+		}
 	}
 }
