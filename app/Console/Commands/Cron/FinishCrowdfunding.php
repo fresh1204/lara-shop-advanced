@@ -37,7 +37,7 @@ class FinishCrowdfunding extends Command
             // 众筹结束时间早于当前时间
             ->where('end_at','<=',Carbon::now())
             // 众筹状态为众筹中
-            ->where('stauts',CrowdfundingProduct::STATUS_FUNDING)
+            ->where('status',CrowdfundingProduct::STATUS_FUNDING)
             ->get()
             ->each(function(CrowdfundingProduct $crowdfunding){
                 // 如果众筹目标金额大于实际众筹金额
@@ -65,9 +65,10 @@ class FinishCrowdfunding extends Command
     protected function crowdfundingFailed(CrowdfundingProduct $crowdfunding)
     {
         // 将众筹状态改为众筹失败
-        $crowdfunding->update([
+        $dd = $crowdfunding->update([
             'status' => CrowdfundingProduct::STATUS_FAIL,
         ]);
+        
         /*
          * 众筹失败退款部分涉及到了与外部 API 的交互，是属于长耗时的操作,
          * 可以让这些任务分散到不同的队列处理服务器上，减轻定时任务服务器压力,

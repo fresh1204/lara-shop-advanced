@@ -11,6 +11,7 @@ use App\Exceptions\InvalidRequestException;
 use App\Jobs\CloseOrder;
 use App\Models\CouponCode;
 use App\Exceptions\CouponCodeUnavailableException;
+use App\Exceptions\InternalException;
 
 class OrderService
 {
@@ -158,14 +159,14 @@ class OrderService
 			case 'alipay':
                    // 生成一个退款订单号
                    $refundNo = Order::getAvailableRefundNo();
-                    
+                   //\Log::info($order->no.'||'.$order->total_amount.'||'.$refundNo);exit;
                    // 调用支付宝支付实例的 refund 方法
                    $ret = app('alipay')->refund([
                     'out_trade_no' => $order->no,  // 订单流水号
                     'refund_amount' => $order->total_amount,  // 退款金额，单位元
                     'out_request_no' => $refundNo,   // 退款订单号
                    ]);
-                   //\Log::info($ret);
+                   //\Log::info($ret);exit;
                    
                    // 根据支付宝的文档，如果返回值里有 sub_code 字段说明退款失败
                    if($ret->sub_code){

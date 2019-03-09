@@ -39,7 +39,12 @@
             <span class="text-red">￥{{ $product->crowdfunding->target_amount }}</span>
             的支持才可成功，
             <!-- Carbon 对象的 diffForHumans() 方法可以计算出与当前时间的相对时间，更人性化 -->
+          
+            @if(time() - strtotime($product->crowdfunding->end_at) <= 0)
             筹款将在<span class="text-red">{{ $product->crowdfunding->end_at->diffForHumans(now()) }}</span>结束！
+            @else
+            筹款已在<span class="text-red">{{ $product->crowdfunding->end_at->diffForHumans(now()) }}</span>结束！
+            @endif
           </div>
           @endif
         </div>
