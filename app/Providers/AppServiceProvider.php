@@ -37,7 +37,7 @@ class AppServiceProvider extends ServiceProvider
             $config = config('pay.alipay');
             //$config['notify_url'] = route('payment.alipay.notify');  //代表服务器端回调地址
             //$config['notify_url'] = 'http://requestbin.fullcontact.com/17u8c971';
-            $config['notify_url'] = ngrok_url('payment.alipay.notify');
+            $config['notify_url'] = ngrok_url('payment.alipay.notify'); //代表服务器端回调地址
 
             $config['return_url'] = route('payment.alipay.return');  //代表前端回调地址
 
