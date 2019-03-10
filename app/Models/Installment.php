@@ -55,7 +55,7 @@ class Installment extends Model
 	//关联还款信息项模型
 	public function items()
 	{
-		$this->hasMany(InstallmentItem::class);
+		return $this->hasMany(InstallmentItem::class);
 	}
 
 	//生成分期流水号
