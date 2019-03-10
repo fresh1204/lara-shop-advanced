@@ -44,6 +44,7 @@
             <a class="dropdown-item" href="{{ route('user_addresses.index') }}">收货地址</a>
             <a class="dropdown-item" href="{{ route('products.favorites') }}">我的收藏</a>
             <a class="dropdown-item" href="{{ route('orders.index') }}">我的订单</a>
+            <a class="dropdown-item" href="{{ route('installments.index') }}" >分期付款</a>
             <a class="dropdown-item" id="logout" href="#"
                onclick="event.preventDefault();document.getElementById('logout-form').submit();">退出登录</a>
             <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">

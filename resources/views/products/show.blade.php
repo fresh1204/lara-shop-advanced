@@ -85,7 +85,7 @@
           <!-- 众筹商品下单按钮开始 -->
           @if($product->type === \App\Models\Product::TYPE_CROWDFUNDING)
             @if(Auth::check())
-              @if($product->crowdfunding->status === \App\Models\CrowdfundingProduct::STATUS_FUNDING)
+              @if($product->crowdfunding->status === \App\Models\CrowdfundingProduct::STATUS_FUNDING )
                 <button class="btn btn-primary btn-crowdfunding">参与众筹</button>
               @else
                 <button class="btn btn-primary disabled">
