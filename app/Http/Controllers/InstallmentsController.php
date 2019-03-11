@@ -113,7 +113,7 @@ class InstallmentsController extends Controller
             // 更新对应的还款计划
             $item->update([
                 'paid_at' => Carbon::now(),        // 支付时间
-                'payment_mehtod' => 'alipay',      // 支付方式
+                'payment_method' => 'alipay',      // 支付方式
                 'payment_no' => $data->trade_no,   // 支付宝订单号
             ]);
 
@@ -125,7 +125,7 @@ class InstallmentsController extends Controller
                 // 将分期付款对应的商品订单状态改为已支付
                 $installment->order->update([
                     'paid_at' => Carbon::now(),
-                    'payment_mehtod' => 'installment', // 支付方式为分期付款
+                    'payment_method' => 'installment', // 支付方式为分期付款
                     'payment_no' => $no,  // 支付订单号为分期付款的流水号
                 ]);
 
