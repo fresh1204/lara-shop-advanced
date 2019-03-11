@@ -244,9 +244,9 @@
     $('.btn-select-installment').click(function(){alert('hell');
       // 调用创建分期付款接口
       axios.post('{{ route('payment.installment',['order' => $order->id]) }}',{ count:$(this).data('count') }).then(function(response){
-        console.log(response.data);
+        //console.log(response.data);
         // todo 跳转到分期付款页面
-        location.href = '/installments' + response.data.id;
+        location.href = '/installments/' + response.data.id;
       })
     });
 
