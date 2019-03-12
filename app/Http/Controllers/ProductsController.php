@@ -86,6 +86,7 @@ class ProductsController extends Controller
     		throw new InvalidRequestException('商品未上架');
     		//throw new InternalException('商品未上架');
     	}
+        //$dd = $product->grouped_properties;echo '<pre>';print_r($dd);
 
     	//是否收藏商品的标示
     	$favored = false;
