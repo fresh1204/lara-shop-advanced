@@ -9,6 +9,7 @@ use Encore\Admin\Controllers\HasResourceActions;
 use Encore\Admin\Layout\Content;
 use Encore\Admin\Grid;
 use Encore\Admin\Form;
+use App\Jobs\SyncOneProductToES;
 
 abstract class CommonProductsController extends Controller
 {
@@ -119,8 +120,16 @@ abstract class CommonProductsController extends Controller
 
         // 定义事件回调，当模型即将保存时会触发这个回调
         $form->saving(function(Form $form){
+        	// 计算商品价格
         	$form->model()->price = collect($form->input('skus'))->where(Form::REMOVE_FLAG_NAME, 0)
         														 ->min('price') ?: 0;
+        });
+
+        // 事件回调，当模型保存后触发这个回调
+        // 所有类型的商品,在被创建或者被修改时,都同步到 Elasticsearch
+        $form->saved(function(Form $form){
+        	$product = $form->model();
+        	$this->dispatch(new SyncOneProductToES($product));
         });
 
         return $form;
