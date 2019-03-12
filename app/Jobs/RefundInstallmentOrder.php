@@ -33,19 +33,17 @@ class RefundInstallmentOrder implements ShouldQueue // ShouldQueue 代表这是�
     public function handle()
     {
         // 如果商品订单支付方式不是分期付款、订单未支付、订单退款状态不是退款中，则不执行后面的逻辑
-        if($this->order->payment_method !== 'installment' 
-            || !$this->order->paid_at
-            || $this->order->status !== Order::REFUND_STATUS_PROCESSING){
-            \Log::info('北京');
-            return ;
+        
+        if($this->order->payment_method !== 'installment' || !$this->order->paid_at 
+            || $this->order->refund_status !== Order::REFUND_STATUS_PROCESSING){
+            return;
         }
 
         // 找不到对应的分期付款，原则上不可能出现这种情况，这里的判断只是增加代码健壮性
         if(!$installment = Installment::query()->where('order_id',$this->order->id)->first()){
-            \Log::info('上海');
             return;
         }
-        \Log::info('重启');
+        // \Log::info('重启');
         // 遍历对应分期付款的所有还款计划
         foreach($installment->items as $item){
             // 如果还款计划未支付，或者退款状态为退款成功或退款中，则跳过
@@ -95,7 +93,7 @@ class RefundInstallmentOrder implements ShouldQueue // ShouldQueue 代表这是�
         // 退款单号使用商品订单的退款号与当前还款计划的序号拼接而成
         $refundNo = $this->order->refund_no.'_'.$item->sequence;
         // 根据还款计划的支付方式执行对应的退款逻辑
-        switch (variable) {
+        switch ($item->payment_method) {
             case 'wechat':
                 # code...
                 break;
