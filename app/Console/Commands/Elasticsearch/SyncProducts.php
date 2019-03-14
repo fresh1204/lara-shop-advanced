@@ -5,6 +5,9 @@ namespace App\Console\Commands\Elasticsearch;
 use Illuminate\Console\Command;
 use App\Models\Product;
 
+/*
+ * 将商品数据同步到 Elasticsearch中
+*/
 class SyncProducts extends Command
 {
     /**
