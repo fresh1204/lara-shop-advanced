@@ -180,6 +180,7 @@ class ProductsController extends Controller
             foreach($filterArray as $filter){
                 // 将字符串用符号 : 拆分成两部分并且分别赋值给 $name 和 $value 两个变量
                 list($name,$value) = explode(':',$filter);
+                //dd($filter);
                 // 将用户筛选的属性添加到数组中
                 $propertyFilters[$name] = $value;
 
@@ -190,8 +191,10 @@ class ProductsController extends Controller
                         // 指明 nested 字段
                         'path' => 'properties',
                         'query' => [
-                            ['term' => ['properties.name' => $name]],
-                            ['term' => ['properties.value' => $value]],
+                            // 将原来的两个 term 查询改成一个
+                            //['term' => ['properties.name' => $name]],
+                            //['term' => ['properties.value' => $value]],
+                            ['term' => ['properties.search_value' => $filter]],
                         ],
                     ],
                 ];
