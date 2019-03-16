@@ -54,6 +54,7 @@ class AppServiceProvider extends ServiceProvider
             return Pay::alipay($config);
         });
 
+        // 往服务容器中注入一个名为 wechat_pay 的单例对象
         $this->app->singleton('wechat_pay',function(){
             $config = config('pay.wechat');
             if(app()->environment() !== 'production'){
@@ -83,3 +84,4 @@ class AppServiceProvider extends ServiceProvider
         });
     }
 }
+ 
