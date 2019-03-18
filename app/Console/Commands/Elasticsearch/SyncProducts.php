@@ -28,6 +28,7 @@ class SyncProducts extends Command
      */
     public function __construct()
     {
+        // $this->info('脱离舒适区，才能进步');
         parent::__construct();
     }
 
@@ -38,6 +39,8 @@ class SyncProducts extends Command
      */
     public function handle()
     {
+        //$this->info("每天进步一点点");exit;
+
         // 获取 Elasticsearch 对象
         $es = app('es');
 
@@ -46,6 +49,7 @@ class SyncProducts extends Command
             ->with(['skus','properties'])
             // 使用 chunkById 避免一次性加载过多数据
             ->chunkById(100,function($products) use($es){
+
                 $this->info(sprintf('正在同步 ID 范围为 %s 至 %s 的商品', $products->first()->id, $products->last()->id));
                 // 初始化请求体
                 $req = ['body' => []];

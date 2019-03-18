@@ -3,6 +3,11 @@ namespace App\SearchBuilders;
 
 use App\Models\Category;
 
+/**
+ *
+ *封装Elasticsearch 查询
+ *
+*/
 class ProductsSearchBuilder
 {
 	// 初始化查询
@@ -72,7 +77,7 @@ class ProductsSearchBuilder
 				],
 			];
 		}
-
+		//echo '<pre>';print_r($this);exit;
 		return $this;
 	}
 

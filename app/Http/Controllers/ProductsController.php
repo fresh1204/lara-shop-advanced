@@ -38,6 +38,7 @@ class ProductsController extends Controller
     		});
     	}
 
+
         // 如果有传入 category_id 字段，并且在数据库中有对应的类目
         if($request->input('category_id') && $category = Category::find($request->input('category_id'))){
             
@@ -406,4 +407,6 @@ class ProductsController extends Controller
 
     	return view('products.favorites',['products' => $products]);
     }
+
+    
 }

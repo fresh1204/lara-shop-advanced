@@ -9,6 +9,11 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use App\Models\Product;
 
+/**
+ *
+ * 同步变更数据到Elasticsearch (实现新增或修改商品时，能够同步到Elasticsearch)
+ *
+*/
 class SyncOneProductToES implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
@@ -17,7 +22,6 @@ class SyncOneProductToES implements ShouldQueue
 
     public function __construct(Product $product)
     {
-        //
         $this->product = $product;
     }
 
@@ -28,8 +32,9 @@ class SyncOneProductToES implements ShouldQueue
      */
     public function handle()
     {
-        //
+        //获取数据模型转为数组的数据
         $data = $this->product->toESArray();
+        
         app('es')->index([
             'index' => 'products',
             'type' => '_doc',
