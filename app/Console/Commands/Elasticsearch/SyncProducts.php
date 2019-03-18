@@ -10,7 +10,6 @@ use App\Models\Product;
 */
 class SyncProducts extends Command
 {
-    
     // 添加一个名为 index，默认值为 products 的参数
     protected $signature = 'es:sync-products {--index=products}';
 

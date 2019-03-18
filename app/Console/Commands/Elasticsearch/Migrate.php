@@ -40,7 +40,7 @@ class Migrate extends Command
         $indices = [];
         //把商品索引类添加到迁移命令的索引类数组中
         $indices = [Indices\ProjectIndex::class];
-        
+    
         // 遍历索引类数组
         foreach($indices as $indexClass){
             // 调用类数组的 getAliasName() 方法来获取索引别名
@@ -113,6 +113,7 @@ class Migrate extends Command
             'index' => $aliasName,
             'type' => '_doc',
             'body' => [
+    
                 '_doc' => [
                     'properties' => $indexClass::getProperties(),
                 ],
@@ -137,7 +138,6 @@ class Migrate extends Command
             $this->error($msg);
             throw new \Exception($msg);
         }
-
         // 新的索引名称
         $newIndexName = $aliasName.'_'.($m[1]+1);
         $this->info('正在创建索引'.$newIndexName);
@@ -162,6 +162,5 @@ class Migrate extends Command
         $this->info('修改成功，准备删除旧索引');
         $this->es->indices()->delete(['index' => $indexName]);
         $this->info('删除成功');
-
     }
 }

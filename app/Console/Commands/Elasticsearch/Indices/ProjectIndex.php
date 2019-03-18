@@ -13,7 +13,8 @@ class ProjectIndex
 
 	public static function getProperties()
 	{
-		return [
+
+        return [
             'type'          => ['type' => 'keyword'],
             'title'         => ['type' => 'text', 'analyzer' => 'ik_smart', 'search_analyzer' => 'ik_smart_synonym'],
             'long_title'    => ['type' => 'text', 'analyzer' => 'ik_smart', 'search_analyzer' => 'ik_smart_synonym'],
@@ -54,10 +55,9 @@ class ProjectIndex
         ];
 	}
 
-	// 同义词
-	public static function getSettings()
-	{
-		return [
+    public static function getSettings()
+    {
+        return [
             'analysis' => [
                 'analyzer' => [
                     'ik_smart_synonym' => [
