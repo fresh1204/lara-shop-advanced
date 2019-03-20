@@ -85,6 +85,9 @@ Route::group(['middleware' => ['auth','verified']],function(){
 	// 分期付款-支付宝前端回调
 	Route::get('installments/alipay/return','InstallmentsController@alipayReturn')->name('installments.alipay.return');
 
+	//秒杀商品下单
+	Route::post('seckill_orders','OrdersController@seckill')->name('seckill_orders.store');
+
 });
 
 Route::get('products','ProductsController@index')->name('products.index');

@@ -21,6 +21,7 @@ use App\Events\OrderReviewed;
 use App\Http\Requests\ApplyRefundRequest;
 use App\Models\CouponCode;
 use App\Exceptions\CouponCodeUnavailableException;
+use App\Http\Requests\SeckillOrderRequest;
 
 class OrdersController extends Controller
 {
@@ -262,5 +263,14 @@ class OrdersController extends Controller
 
     }
 
+    //秒杀订单处理
+    public function seckill(SeckillOrderRequest $request,OrderService $orderService)
+    {
+        $user = $request->user();
+        $address = UserAddress::find($request->input('address_id'));
+        $sku = ProductSku::find($request->input('sku_id'));
+
+        return $orderService->seckill($user,$address,$sku);
+    }
     
 }

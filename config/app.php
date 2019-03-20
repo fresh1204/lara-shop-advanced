@@ -124,6 +124,7 @@ return [
     'cipher' => 'AES-256-CBC',
 
     'order_ttl' => 1800,
+    'seckill_order_ttl' => 600, //秒杀订单的支付有效期设为 10 分钟
 
     'ngrok_url' => env('NGROK_URL'),
 
