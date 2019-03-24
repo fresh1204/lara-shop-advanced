@@ -15,7 +15,7 @@ abstract class CommonProductsController extends Controller
 {
 	 use HasResourceActions;
 
-	 // 定义一个抽象方法，返回当前管理的商品类型(普通商品，众筹商品)
+	 // 定义一个抽象方法，返回当前管理的商品类型(普通商品，众筹商品,秒杀商品)
 	 abstract public function getProductType();
 
 	 // 定义一个抽象方法，各个类型的控制器将实现本方法,来定义列表应该展示哪些字段

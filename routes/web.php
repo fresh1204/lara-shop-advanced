@@ -10,6 +10,8 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::post('seckill_orders','OrdersController@seckill')->name('seckill_orders.store');
+
 Route::get('alipay', function() {
     return app('alipay')->web([
         'out_trade_no' => time(),
@@ -86,7 +88,7 @@ Route::group(['middleware' => ['auth','verified']],function(){
 	Route::get('installments/alipay/return','InstallmentsController@alipayReturn')->name('installments.alipay.return');
 
 	//秒杀商品下单
-	Route::post('seckill_orders','OrdersController@seckill')->name('seckill_orders.store');
+	//Route::post('seckill_orders','OrdersController@seckill')->name('seckill_orders.store');
 
 });
 

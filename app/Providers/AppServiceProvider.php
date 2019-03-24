@@ -7,6 +7,7 @@ use Monolog\Logger;
 use Yansongda\Pay\Pay;
 use Carbon\Carbon;
 use Elasticsearch\ClientBuilder as ESClientBuilder;
+use Illuminate\Support\Str;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -24,6 +25,13 @@ class AppServiceProvider extends ServiceProvider
 
         // 对于需要全局设置的操作，通常放在 AppServiceProvider 的 boot() 方法中来执行
         Carbon::setLocale('zh');
+
+        //只在本地开发环境中启用 SQL 日志
+        if(app()->environment('local')){
+            \DB::listen(function($query){
+                \Log::info(Str::replaceArray('?',$query->bindings,$query->sql));
+            });
+        }
     }
 
     /**
